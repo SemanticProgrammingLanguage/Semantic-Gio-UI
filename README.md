@@ -1,4 +1,9 @@
-# Semantic Gio
+<p align="center">
+ <img width="240" height="240" alt="SemanticLogo" src="https://github.com/user-attachments/assets/6cc48b96-6560-443f-8765-943f06d8a3d4" />
+</p>
+
+# Semantic Gio 
+
 
 **Semantic Gio** is a Semantic Programming Language version of the Gio UI framework.
 
