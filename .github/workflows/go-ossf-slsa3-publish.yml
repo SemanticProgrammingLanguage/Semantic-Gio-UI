@@ -1,0 +1,49 @@
+name: Build and Release Semantic Gio UI
+
+on:
+  workflow_dispatch:
+
+permissions:
+  contents: write
+  id-token: write
+  attestations: write
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      # ----------------------------------------------------------
+      # Hier Dein echtes Artefakt erzeugen
+      # ----------------------------------------------------------
+      - name: Build package
+        run: |
+          mkdir -p dist
+          zip -r dist/Semantic-Gio-UI.zip . \
+            -x ".git/*" \
+            -x "dist/*"
+
+      # ----------------------------------------------------------
+      # Optional: Provenance / Attestation erzeugen
+      # ----------------------------------------------------------
+      - name: Attest artifact
+        uses: actions/attest@v4
+        with:
+          subject-path: dist/Semantic-Gio-UI.zip
+
+      # ----------------------------------------------------------
+      # Release DIREKT erstellen und Datei anhängen
+      # ----------------------------------------------------------
+      - name: Create GitHub Release
+        env:
+          GH_TOKEN: ${{ github.token }}
+        run: |
+          TAG="v0.1.${{ github.run_number }}"
+
+          gh release create "$TAG" \
+            "dist/Semantic-Gio-UI.zip" \
+            --title "Semantic Gio UI $TAG" \
+            --generate-notes
